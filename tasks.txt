@@ -1,0 +1,7 @@
+1. insert a record
+2. update a record
+3. delete a record
+4. query record by id
+5. query records by criteria
+6. one to one association
+7. one to many association
