@@ -21,3 +21,8 @@ Object Relational Mapping Framework
 2. improve the demo app from last round, to support rendering object with 1-N relationship
 3. you must use your own MVC and DI container(or Guice if you failed the DI challenge)
 
+
+###Getting started
+1. set up database: `mysql -uroot < setup.sql`
+2. generate idea project `gradle idea`
+3. run test `gradle test`
