@@ -5,3 +5,8 @@
 *.war
 *.ear
 .gradle/
+
+# idea Files #
+*.iml
+*.ipr
+*.iws
