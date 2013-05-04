@@ -40,6 +40,20 @@ public class MappingTest {
         assertThat(pet.getAge(), equalTo(2));
     }
 
+    @Test
+    public void should_update_object_by_id() throws SQLException {
+        String insertSQL = "INSERT INTO pets values(%d,'%s', '%s', %d)";
+        connection.createStatement().executeUpdate(String.format(insertSQL, 1, "Doudou", "Female", 2));
+
+        Pet pet = petDao.findById(1);
+        assertThat(pet.getName(), equalTo("Doudou"));
+
+        petDao.update(1, "name", "James");
+        Pet pet1 = petDao.findById(1);
+        assertThat(pet1.getName(), equalTo("James"));
+
+    }
+
     @After
     public void tearDown() throws SQLException {
         connection.createStatement().execute("truncate pets");

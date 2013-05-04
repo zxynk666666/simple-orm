@@ -7,9 +7,7 @@ import com.thoughtworks.orm.util.Lang;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.ParameterizedType;
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.Collection;
 
 import static com.thoughtworks.orm.util.Lang.*;
@@ -21,14 +19,15 @@ public class BaseDao<T> {
 
 
     private String databaseUrl;
+    private final String tableName;
 
     public BaseDao() {
         entityClass = (Class<T>) ((ParameterizedType) getClass()
                 .getGenericSuperclass()).getActualTypeArguments()[0];
+        this.tableName = entityClass.getAnnotation(Table.class).value();
     }
 
     public T findById(Integer id) {
-        String tableName = entityClass.getAnnotation(Table.class).value();
         String query = String.format("select * from %s where id = %s", tableName, id);
 
         ResultSet resultSet = getResultSet(query);
@@ -72,5 +71,13 @@ public class BaseDao<T> {
 
     public void setDatabaseUrl(String databaseUrl) {
         this.databaseUrl = databaseUrl;
+    }
+
+    public void update(int id, String name, String value) throws SQLException {
+        String query = String.format("update %s set %s = ? where id = %s", tableName, name, id);
+        Connection connection = getConnection(databaseUrl);
+        PreparedStatement preparedStmt = connection.prepareStatement(query);
+        preparedStmt.setString(1, value);
+        preparedStmt.executeUpdate();
     }
 }
