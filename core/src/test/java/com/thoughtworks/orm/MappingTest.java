@@ -11,8 +11,6 @@ import java.sql.SQLException;
 
 import static java.sql.DriverManager.getConnection;
 import static org.hamcrest.CoreMatchers.equalTo;
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertThat;
 
@@ -67,6 +65,16 @@ public class MappingTest {
         petDao.deleteById(1);
         pet = petDao.findById(1);
         assertNull(pet);
+    }
+
+    @Test
+    public void should_query_record_by_criteria() throws SQLException {
+        String insertSQL = "INSERT INTO pets values(%d,'%s', '%s', %d)";
+        connection.createStatement().executeUpdate(String.format(insertSQL, 1, "Doudou", "Female", 2));
+
+        Pet pet = petDao.find("name", "Doudou");
+        assertThat(pet.getName(), equalTo("Doudou"));
+
     }
 
     @After

@@ -90,4 +90,11 @@ public class BaseDao<T> {
 
         statement.executeUpdate();
     }
+
+    public T find(String name, String value) {
+        String query = String.format("select * from %s where %s = '%s'", tableName, name, value);
+        ResultSet resultSet = getResultSet(query);
+
+        return (T) buildInstance(resultSet, entityClass);
+    }
 }
